@@ -1,0 +1,7 @@
+package awesomechatapp;
+
+
+public enum Operation {
+        CREATE_USER, TRY_LOGIN, VERIFY_CODE, LOGOUT, CHECK_FRIEND_REQUESTS, 
+        FRIENDSHIP_CONFIRMED, FRIENDSHIP_IGNORED, GET_FRIENDS_INFO
+}

@@ -1,0 +1,40 @@
+To Do:
+
+1. Handle situation when not connected to the server -> it freezes (flag)
+2. Make the chat functionality
+3. Forget password functionality
+4. Conference functionality
+5. Upload photo when user clicks on photo-imageview
+6. Handle situation when user closes the confirmation code window
+8. Make mail to use for this App
+
+
+
+Doesn't work:
+    -when user wants to send friend request to other user, it doesn't work
+            need another thread that waits for server message??? but a separate thread cannot
+            open javafx windows
+
+
+Done:
+9. Select image when clicking on photo
+-when client clicks logout, remove client thread from server
+
+7. Add Friend functionality
+NOTE: Other user will receive the friend request only when he logs in
+Send friend req:
+    If other user DOESN'T have an account:
+    *-tell user if other user doesnt have an account
+   
+    It other user has an account:AA
+    *-send friend request and store it in friend_requests table
+    -server will try to send the message
+    NOT WORKING:-if other user is online:
+            -he will receive the friend-request, 
+                    and the message will be deleted from DB
+    *-if other user is NOT online:
+            *-message will be kept in DB
+            *-when he signs in, check if he has any 
+                    messages to receive, server will send that message
+
+    -check if friend you try to add is not already in your friends list

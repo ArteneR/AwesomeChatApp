@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="awesomechatapp.FXMLFriendRequestWindowController">
+   <children>
+      <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have a friend request.">
+         <font>
+            <Font name="Verdana" size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="txtFriendUsernameEmail" layoutX="20.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Would you like to confirm Username (Email) as your friend?" wrappingWidth="460.0">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+      </Text>
+      <Line endX="460.0" layoutX="20.0" layoutY="70.0" />
+      <Button layoutX="390.0" layoutY="150.0" mnemonicParsing="false" onAction="#clickedIgnore" prefHeight="30.0" prefWidth="90.0" text="Ignore" />
+      <Button layoutX="280.0" layoutY="150.0" mnemonicParsing="false" onAction="#clickedConfirm" prefHeight="30.0" prefWidth="90.0" text="Confirm" />
+   </children>
+</AnchorPane>

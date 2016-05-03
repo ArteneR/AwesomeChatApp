@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="awesomechatapp.FXMLChatWindowController">
+   <children>
+      <ImageView fx:id="ivFriendPhoto" fitHeight="80.0" fitWidth="80.0" layoutX="20.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../user.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </ImageView>
+      <Label fx:id="lblFriendUsername" layoutX="110.0" layoutY="20.0" prefHeight="20.0" prefWidth="270.0" text="FriendUsername" />
+      <Label fx:id="lblFriendStatus" layoutX="110.0" layoutY="50.0" prefHeight="20.0" prefWidth="270.0" text="FriendStatus">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor></Label>
+      <ScrollPane layoutX="20.0" layoutY="100.0" prefHeight="300.0" prefWidth="360.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="358.0">
+               <children>
+                  <TextArea fx:id="taAllMessages" editable="false" focusTraversable="false" prefHeight="300.0" prefWidth="360.0" wrapText="true" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <ImageView fx:id="ivMyPhoto" fitHeight="80.0" fitWidth="80.0" layoutX="300.0" layoutY="410.0" onMouseClicked="#clickedMyPhoto" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../user.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Button layoutX="300.0" layoutY="500.0" mnemonicParsing="false" onAction="#clickedSend" prefHeight="30.0" prefWidth="80.0" text="SEND" />
+      <TextArea fx:id="taTypedMessage" layoutX="20.0" layoutY="410.0" prefHeight="120.0" prefWidth="270.0" wrapText="true" />
+   </children>
+</AnchorPane>

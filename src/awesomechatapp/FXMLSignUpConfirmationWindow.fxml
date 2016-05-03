@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="260.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="awesomechatapp.FXMLSignUpConfirmationWindowController">
+   <children>
+      <Text layoutX="20.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check your email - we sent you an email with a confirmation code. Enter the code in the box:" wrappingWidth="446.826171875">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfConfirmationCode" layoutX="20.0" layoutY="157.0" prefHeight="50.0" prefWidth="160.0" promptText="Code here">
+         <font>
+            <Font name="Arial" size="26.0" />
+         </font>
+      </TextField>
+      <Button layoutX="390.0" layoutY="210.0" mnemonicParsing="false" onAction="#checkConfirmationCode" prefHeight="30.0" prefWidth="90.0" text="Confirm" />
+      <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check Your Email">
+         <font>
+            <Font name="Verdana" size="20.0" />
+         </font>
+      </Text>
+      <Line endX="460.0" layoutX="20.0" layoutY="70.0" />
+      <Text layoutX="196.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="We sent your code to:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Text>
+      <Label fx:id="lblEmailAddress" layoutX="196.0" layoutY="182.0" prefHeight="17.0" prefWidth="280.0" text="confirmation-code@yahoo.com" />
+   </children>
+</AnchorPane>
