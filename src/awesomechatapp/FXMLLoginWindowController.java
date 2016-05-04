@@ -90,7 +90,10 @@ public class FXMLLoginWindowController implements Initializable {
                                     showFriendshipRequests();
                             } 
                     });
-                
+                    
+                    Thread messageListener = new Thread(new ListenerThread(Client.getServer(), Client.getPort()));
+                    messageListener.start();
+                    
                     openMainWindow(event);
             }
             else {

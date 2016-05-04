@@ -19,7 +19,7 @@ public class Client {
 //	private static final String SERVER = "192.168.0.105";
 	private static final String SERVER = "raspberrypi.local";
 //	private static final String SERVER = "169.254.113.204";
-	private static final int PORT = 5001;
+	private static final int PORT = 5003;
 	private static final String CLOSE_CONNECTION = "CLOSE_CONNECTION";
 	private static final String MESSAGE = "MESSAGE";
 	private static final String RECEIVER = "ReceiverUsernameORConferenceName";
@@ -52,7 +52,7 @@ public class Client {
                         Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
 	}
-	
+     
         
 	/**
 	 * messageType: can be: 
@@ -131,6 +131,14 @@ public class Client {
         
         public static ArrayList<Friend> getFriends() {
                 return friends;
+        }
+        
+        public static String getServer() {
+                return SERVER;
+        }
+        
+        public static int getPort() {
+                return PORT;
         }
         
 }
