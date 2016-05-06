@@ -79,11 +79,8 @@ public class FXMLMainWindowController implements Initializable {
             System.out.println("Opening MainWindow...");
             
             lblMyUsername.setText(Client.getUsername());
-            
-//            ivMyPhoto.setImage(Client.getUserPhoto());
+            ivMyPhoto.setImage(Client.getUserPhoto());
             ivMyPhoto.setCursor(Cursor.HAND);
-            
-            
             
             ArrayList<Friend> friends = Client.getFriends();
             

@@ -9,6 +9,11 @@ To Do:
 8. Make mail to use for this App
 
 
+TO DO:
+
+-close sockets
+
+
 
 Doesn't work:
     -when user wants to send friend request to other user, it doesn't work

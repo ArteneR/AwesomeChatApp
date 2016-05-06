@@ -6,7 +6,8 @@ public enum MessageType {
         QUERY("QUERY"), 
         RESPONSE_SUCCESS("RESPONSE_SUCCESS"), 
         RESPONSE_FAILED("RESPONSE_FAILED"),
-        FRIEND_REQUEST("FRIEND_REQUEST");
+        FRIEND_REQUEST("FRIEND_REQUEST"),
+        ACK("ACK");
         
         private final String text;
         

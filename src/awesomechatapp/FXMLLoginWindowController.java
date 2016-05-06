@@ -1,5 +1,8 @@
 package awesomechatapp;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -8,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -27,8 +31,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkEvent.EventType;
+import static jdk.nashorn.internal.objects.ArrayBufferView.buffer;
 
 
 /**
@@ -65,7 +71,7 @@ public class FXMLLoginWindowController implements Initializable {
     
     @FXML
     /*** clicked 'Sign In' ***/
-    private void clickedSignIn(ActionEvent event) throws IOException {
+    private void clickedSignIn(ActionEvent event) throws IOException, InterruptedException {
             Client client = new Client();
             
             // check user credentials, log in if OK
@@ -74,13 +80,19 @@ public class FXMLLoginWindowController implements Initializable {
             
             String response = Client.waitForResponse();
             String responseType = response.substring(0, response.indexOf(":"));
-            String responseUserID = response.substring(response.indexOf("**")+2, response.length());
             
             // if successfully logged in, open MainWindow
             if (responseType.equals(MessageType.RESPONSE_SUCCESS.toString())) {
                     Client.setUsername(tfUsername.getText());
-                    Client.setUserID(responseUserID);
-                
+                    
+                    // get user avatar
+                    Client.sendQuery(MessageType.QUERY, Operation.GET_USER_AVATAR, null);
+                    byte[] imageBytes = Client.waitForFileBytes();
+                    BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
+                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                    Client.setUserPhoto(image);
+                    
+                    
                     getFriendsInfo();
                     
                     // this thread will display the friendship requests if there are any

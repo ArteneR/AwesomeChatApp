@@ -39,7 +39,7 @@
       <Pane layoutX="33.0" layoutY="18.0" prefHeight="104.0" prefWidth="104.0" style="-fx-border-color: #DBE4EA; -fx-border-width: 2;" />
       <ImageView fx:id="ivMyPhoto" fitHeight="100.0" fitWidth="100.0" layoutX="35.0" layoutY="20.0" onMouseClicked="#clickedMyPhoto" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@user.png" />
+            <Image url="@userr.png" />
          </image>
       </ImageView>
       <Label fx:id="lblMyUsername" layoutX="145.0" layoutY="30.0" prefHeight="20.0" prefWidth="220.0" text="ThisUsername">
