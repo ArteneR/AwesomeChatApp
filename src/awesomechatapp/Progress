@@ -9,9 +9,20 @@ To Do:
 8. Make mail to use for this App
 
 
+
+
 TO DO:
 
 -close sockets
+-send uploaded photo to server, convert to bytes array, send via sockets, 
+        receive chunk by chunk, reconstruct file, save on server, save path to it in DB
+-updata UI from another thread, or workaround -> TO make the chat functionality
+-Only png files allowed for the moment
+-if you enter wrong password, if you connect again it freezes
+-program doesn't end when clicked close button
+
+
+
 
 
 

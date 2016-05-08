@@ -1,6 +1,8 @@
 package awesomechatapp;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -10,6 +12,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -128,9 +131,23 @@ public class FXMLMainWindowController implements Initializable {
                     newPhoto.setLayoutY(FRIEND_PHOTO_LAYOUT_Y);
                     newPhoto.setPickOnBounds(true);
                     newPhoto.setPreserveRatio(true);
-                    File file = new File("images/user2.png");
-                    Image newImage = new Image(file.toURI().toString());
-                    newPhoto.setImage(newImage);
+                    
+                    // get user avatar
+                    try {
+                            String params = friends.get(i).getUsername();
+                            Client.sendQuery(MessageType.QUERY, Operation.GET_USER_AVATAR, params);
+                            byte[] imageBytes = Client.waitForFileBytes();
+                            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
+                            Image newImage = SwingFXUtils.toFXImage(bufferedImage, null);
+                            
+                            newPhoto.setImage(newImage);
+                            
+                            friends.get(i).setPhoto(newImage);  
+                    } 
+                    catch (IOException | InterruptedException ex) {
+                        Logger.getLogger(FXMLMainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
+                    
                     
                     // set the username
                     Label newUsername = new Label(friends.get(i).getUsername());
@@ -168,6 +185,8 @@ public class FXMLMainWindowController implements Initializable {
             String statusTooltip = "Click here to change the status";
             Tooltip lblMyStatusTooltip = new Tooltip(statusTooltip);
             lblMyStatus.setTooltip(lblMyStatusTooltip);
+            
+            lblMyStatus.setCursor(Cursor.HAND);
             
             String statusTextFieldStatus = "Press Enter to confirm status change";
             Tooltip tfEnterStatusTooltip = new Tooltip(statusTextFieldStatus);
@@ -283,15 +302,28 @@ public class FXMLMainWindowController implements Initializable {
 
             //Show open file dialog
             File file = fileChooser.showOpenDialog(null);
-                       
+            
             try {
-                BufferedImage bufferedImage = ImageIO.read(file);
-                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-                ivMyPhoto.setImage(image);
-                Client.setUserPhoto(image);
+                    BufferedImage bufferedImage = ImageIO.read(file);
+                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                    ivMyPhoto.setImage(image);
+                    
+                    Task <Void> task = new Task<Void>() {
+                            @Override
+                            protected Void call() throws Exception {
+                                    Client.setUserPhoto(image);
+                                    Client.saveImageOnServer(bufferedImage);
+                                    return null;
+                            }
+                    }; 
+                
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    thread.start();
+                            
             }
             catch (IOException ex) {
-                Logger.getLogger(FXMLMainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FXMLMainWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
     

@@ -27,6 +27,10 @@ public class Friend {
                 return photo;
         }
         
+        public void setPhoto(Image photo) {
+                this.photo = photo;
+        }
+        
         public String toString() {
                 return username + " " + status;
         }

@@ -2,5 +2,5 @@ package awesomechatapp;
 
 
 public enum Status {
-        OK
+        OK, READY_TO_ACCEPT
 }

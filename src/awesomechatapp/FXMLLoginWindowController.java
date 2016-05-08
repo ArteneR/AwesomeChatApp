@@ -86,7 +86,8 @@ public class FXMLLoginWindowController implements Initializable {
                     Client.setUsername(tfUsername.getText());
                     
                     // get user avatar
-                    Client.sendQuery(MessageType.QUERY, Operation.GET_USER_AVATAR, null);
+                    String paramsUsername = Client.getUsername();
+                    Client.sendQuery(MessageType.QUERY, Operation.GET_USER_AVATAR, paramsUsername);
                     byte[] imageBytes = Client.waitForFileBytes();
                     BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
                     Image image = SwingFXUtils.toFXImage(bufferedImage, null);
