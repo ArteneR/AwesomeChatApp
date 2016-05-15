@@ -1,8 +1,11 @@
 package awesomechatapp;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +26,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 
@@ -33,6 +40,7 @@ public class FXMLChatWindowController implements Initializable {
 
     @FXML private TextArea taTypedMessage;
     @FXML private TextArea taAllMessages;
+    @FXML private TextFlow tfAllMessages;
     @FXML private ImageView ivMyPhoto;
     @FXML private ImageView ivFriendPhoto;
     @FXML private Label lblFriendUsername;
@@ -62,6 +70,61 @@ public class FXMLChatWindowController implements Initializable {
                             }
                     }
             });
+            
+//            Thread messageListener = new Thread(new ListenerThread(Client.getServer(), Client.getPort()));
+//            messageListener.start();
+            
+            Task <Void> task = new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                            Socket clientSocket = new Socket(Client.getServer(), Client.getPort());
+                            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+ 
+                            System.out.println("Creating new Listener...");
+                       
+                            // receive messages from friend 
+                            String response = "";
+                            while(true) {
+                                    try {    
+                                            System.out.println("--Waiting for server message..");
+                                            response = inFromServer.readLine();
+
+                                            // respone format: MessageType.NORMAL_MESSAGE:sender:message
+                                            System.out.println("--Message from server: " + response);
+                                            String responseType = response.substring(0, response.indexOf(":"));
+
+                                            if (responseType.equals(MessageType.NORMAL_MESSAGE.toString())) {
+                                                    String responseData = response.substring(response.indexOf(":")+1, response.length());
+                                                    String messageSender = responseData.substring(0, responseData.indexOf(":"));
+                                                    String message = responseData.substring(responseData.indexOf(":")+1, responseData.length());
+
+                                                    System.out.println("Sender: " + messageSender + " message: " + message);
+
+                                                    taAllMessages.appendText(lblFriendUsername.getText() + ": ");
+                                                    taAllMessages.appendText(message + "\n");
+                                                    
+                                                    Text text1 = new Text(lblFriendUsername.getText());
+                                                    text1.setFill(Color.RED);
+                                                    
+                                                    
+                                                    
+                                            }
+                                    } 
+                                    catch (IOException ex) {
+                                            Logger.getLogger(ListenerThread.class.getName()).log(Level.SEVERE, null, ex);
+                                            return null;
+                                    }
+                            }
+                    }
+            }; 
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true);
+            thread.start();
+
+            
+            
+            
             
 //            Platform.runLater(new Runnable() {
 //                    @Override

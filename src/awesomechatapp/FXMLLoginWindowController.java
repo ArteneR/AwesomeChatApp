@@ -104,8 +104,8 @@ public class FXMLLoginWindowController implements Initializable {
                             } 
                     });
                     
-                    Thread messageListener = new Thread(new ListenerThread(Client.getServer(), Client.getPort()));
-                    messageListener.start();
+//                    Thread messageListener = new Thread(new ListenerThread(Client.getServer(), Client.getPort()));
+//                    messageListener.start();
                     
                     openMainWindow(event);
             }
