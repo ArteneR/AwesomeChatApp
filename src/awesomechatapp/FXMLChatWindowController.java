@@ -19,7 +19,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +29,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -45,7 +48,16 @@ public class FXMLChatWindowController implements Initializable {
     @FXML private ImageView ivFriendPhoto;
     @FXML private Label lblFriendUsername;
     @FXML private Label lblFriendStatus;
+    @FXML private ScrollPane spAllMessages;
     private static Friend friend;
+    private static final String CHAT_FONT_NAME = "Verdana";
+    private static final int CHAT_FONT_SIZE = 13;
+    private static final Font CHAT_FONT = Font.font(CHAT_FONT_NAME, CHAT_FONT_SIZE);
+    private static final Color OTHER_USERNAME_COLOR = Color.web("0xB30000", 1.0);
+    private static final Color OTHER_USER_TEXT = Color.BLACK;
+    private static final Color THIS_USERNAME_COLOR = Color.web("0x8cb56b", 1.0);
+    private static final Color THIS_USER_TEXT = Color.GREY;
+    
     
     
     @Override
@@ -98,16 +110,21 @@ public class FXMLChatWindowController implements Initializable {
                                                     String messageSender = responseData.substring(0, responseData.indexOf(":"));
                                                     String message = responseData.substring(responseData.indexOf(":")+1, responseData.length());
 
-                                                    System.out.println("Sender: " + messageSender + " message: " + message);
+                                                    System.out.println("1Sender: " + messageSender + " message: " + message);
 
-                                                    taAllMessages.appendText(lblFriendUsername.getText() + ": ");
-                                                    taAllMessages.appendText(message + "\n");
-                                                    
-                                                    Text text1 = new Text(lblFriendUsername.getText());
-                                                    text1.setFill(Color.RED);
-                                                    
-                                                    
-                                                    
+                                                    Platform.runLater(new Runnable() {
+                                                            public void run() {
+                                                                    Text otherUsername = new Text(lblFriendUsername.getText() + ": ");
+                                                                    otherUsername.setFill(OTHER_USERNAME_COLOR);
+                                                                    otherUsername.setFont(CHAT_FONT);
+
+                                                                    Text otherUserText = new Text(message + "\n");
+                                                                    otherUserText.setFill(OTHER_USER_TEXT);
+                                                                    otherUserText.setFont(CHAT_FONT);
+                                                                    tfAllMessages.getChildren().addAll(otherUsername, otherUserText);
+                                                                    spAllMessages.setVvalue(1.0);
+                                                            }
+                                                    });
                                             }
                                     } 
                                     catch (IOException ex) {
@@ -150,8 +167,16 @@ public class FXMLChatWindowController implements Initializable {
     
     private void sendMessage() throws IOException {
             String message = taTypedMessage.getText();
-            taTypedMessage.clear();
-            taAllMessages.appendText(Client.getUsername() + ": " + message + "\n");
+            
+            Text thisUsername = new Text(Client.getUsername() + ": ");
+            thisUsername.setFill(THIS_USERNAME_COLOR);
+            thisUsername.setFont(CHAT_FONT);
+            
+            Text thisUserText = new Text(message + "\n");
+            thisUserText.setFill(THIS_USER_TEXT);
+            thisUserText.setFont(CHAT_FONT);
+            tfAllMessages.getChildren().addAll(thisUsername, thisUserText);
+            spAllMessages.setVvalue(1.0);
             
             Client.sendMessage(MessageType.NORMAL_MESSAGE, Client.getUsername(), friend.getUsername(), message);
             /*

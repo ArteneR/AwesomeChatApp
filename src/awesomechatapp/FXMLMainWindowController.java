@@ -2,7 +2,6 @@ package awesomechatapp;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -37,7 +35,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 
@@ -143,7 +140,7 @@ public class FXMLMainWindowController implements Initializable {
                             newPhoto.setImage(newImage);
                             
                             friends.get(i).setPhoto(newImage);  
-                    } 
+                    }
                     catch (IOException | InterruptedException ex) {
                         Logger.getLogger(FXMLMainWindowController.class.getName()).log(Level.SEVERE, null, ex);
                     } 
