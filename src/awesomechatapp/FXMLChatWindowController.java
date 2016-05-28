@@ -89,49 +89,59 @@ public class FXMLChatWindowController implements Initializable {
             Task <Void> task = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                            Socket clientSocket = new Socket(Client.getServer(), Client.getPort());
-                            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
- 
-                            System.out.println("Creating new Listener...");
-                       
-                            // receive messages from friend 
-                            String response = "";
-                            while(true) {
-                                    try {    
-                                            System.out.println("--Waiting for server message..");
-                                            response = inFromServer.readLine();
+                            // send message to server that a new socket for receiving messages will be created
+                            Client.sendQuery(MessageType.QUERY, Operation.MAKE_RECEIVER_SOCKET, null);
+                            
+                            String responseMakeSocket = Client.waitForResponse();
+                            String responseMakeSocketType = responseMakeSocket.substring(0, responseMakeSocket.indexOf(":"));
 
-                                            // respone format: MessageType.NORMAL_MESSAGE:sender:message
-                                            System.out.println("--Message from server: " + response);
-                                            String responseType = response.substring(0, response.indexOf(":"));
+                            System.out.println("------" + responseMakeSocketType);
+                            if (responseMakeSocketType.equals(MessageType.ACK.toString())) {
+                                    Socket clientSocket = new Socket(Client.getServer(), Client.getPort());
+                                    BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-                                            if (responseType.equals(MessageType.NORMAL_MESSAGE.toString())) {
-                                                    String responseData = response.substring(response.indexOf(":")+1, response.length());
-                                                    String messageSender = responseData.substring(0, responseData.indexOf(":"));
-                                                    String message = responseData.substring(responseData.indexOf(":")+1, responseData.length());
+                                    System.out.println("Creating new Listener...");
 
-                                                    System.out.println("1Sender: " + messageSender + " message: " + message);
+                                    // receive messages from friend 
+                                    String response = "";
+                                    while(true) {
+                                            try {    
+                                                    System.out.println("--Waiting for server message..");
+                                                    response = inFromServer.readLine();
 
-                                                    Platform.runLater(new Runnable() {
-                                                            public void run() {
-                                                                    Text otherUsername = new Text(lblFriendUsername.getText() + ": ");
-                                                                    otherUsername.setFill(OTHER_USERNAME_COLOR);
-                                                                    otherUsername.setFont(CHAT_FONT);
+                                                    // respone format: MessageType.NORMAL_MESSAGE:sender:message
+                                                    System.out.println("--Message from server: " + response);
+                                                    String responseType = response.substring(0, response.indexOf(":"));
 
-                                                                    Text otherUserText = new Text(message + "\n");
-                                                                    otherUserText.setFill(OTHER_USER_TEXT);
-                                                                    otherUserText.setFont(CHAT_FONT);
-                                                                    tfAllMessages.getChildren().addAll(otherUsername, otherUserText);
-                                                                    spAllMessages.setVvalue(1.0);
-                                                            }
-                                                    });
+                                                    if (responseType.equals(MessageType.NORMAL_MESSAGE.toString())) {
+                                                            String responseData = response.substring(response.indexOf(":")+1, response.length());
+                                                            String messageSender = responseData.substring(0, responseData.indexOf(":"));
+                                                            String message = responseData.substring(responseData.indexOf(":")+1, responseData.length());
+
+                                                            System.out.println("1Sender: " + messageSender + " message: " + message);
+
+                                                            Platform.runLater(new Runnable() {
+                                                                    public void run() {
+                                                                            Text otherUsername = new Text(lblFriendUsername.getText() + ": ");
+                                                                            otherUsername.setFill(OTHER_USERNAME_COLOR);
+                                                                            otherUsername.setFont(CHAT_FONT);
+
+                                                                            Text otherUserText = new Text(message + "\n");
+                                                                            otherUserText.setFill(OTHER_USER_TEXT);
+                                                                            otherUserText.setFont(CHAT_FONT);
+                                                                            tfAllMessages.getChildren().addAll(otherUsername, otherUserText);
+                                                                            spAllMessages.setVvalue(1.0);
+                                                                    }
+                                                            });
+                                                    }
+                                            } 
+                                            catch (IOException ex) {
+                                                    Logger.getLogger(ListenerThread.class.getName()).log(Level.SEVERE, null, ex);
+                                                    return null;
                                             }
-                                    } 
-                                    catch (IOException ex) {
-                                            Logger.getLogger(ListenerThread.class.getName()).log(Level.SEVERE, null, ex);
-                                            return null;
                                     }
                             }
+                            return null;
                     }
             }; 
 
@@ -167,6 +177,7 @@ public class FXMLChatWindowController implements Initializable {
     
     private void sendMessage() throws IOException {
             String message = taTypedMessage.getText();
+            taTypedMessage.clear();
             
             Text thisUsername = new Text(Client.getUsername() + ": ");
             thisUsername.setFill(THIS_USERNAME_COLOR);

@@ -108,6 +108,22 @@ public class FXMLLoginWindowController implements Initializable {
     }
     
     
+    @FXML
+    /*** clicked 'Forgot your password' ***/
+    private void clickedForgotPassword(ActionEvent event) throws IOException {
+            // Open ForgotPasswordWindow
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLForgotPasswordWindow.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("AwesomeChatApp Forgot Password");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            
+            stage.showAndWait();
+    }
+    
+    
+    
     private void showFriendshipRequests() {
             System.out.println("Thread started!");
             try {

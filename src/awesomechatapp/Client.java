@@ -45,7 +45,7 @@ public class Client {
         private static String status;
         private static Image userPhoto;
         private static ArrayList<Friend> friends;
-        private static final int BUFFER_SIZE = 1024;
+        private static final int BUFFER_SIZE = 8192;    // !!! MUST be the same with the buffer size on server !!!
         
 	
         

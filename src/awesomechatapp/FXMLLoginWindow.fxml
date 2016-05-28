@@ -19,7 +19,7 @@
             <Insets />
          </GridPane.margin>
       </Label>
-      <Hyperlink focusTraversable="false" layoutX="143.0" layoutY="425.0" text="Forgot your password?" />
+      <Hyperlink fx:id="linkForgotPassword" focusTraversable="false" layoutX="143.0" layoutY="425.0" onAction="#clickedForgotPassword" text="Forgot your password?" />
       <ImageView fitHeight="140.0" fitWidth="140.0" layoutX="135.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@logo.png" />
